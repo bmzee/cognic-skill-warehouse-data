@@ -30,6 +30,7 @@ packages = ["src/cognic_skill_warehouse_data"]
 [tool.hatch.build.targets.wheel.force-include]
 "SKILL.md" = "cognic_skill_warehouse_data/SKILL.md"
 "cognic-pack-manifest.toml" = "cognic_skill_warehouse_data/cognic-pack-manifest.toml"
+"golden/manifest.toml" = "cognic_skill_warehouse_data/golden/manifest.toml"
 "golden/queries.jsonl" = "cognic_skill_warehouse_data/golden/queries.jsonl"
 
 [tool.pytest.ini_options]

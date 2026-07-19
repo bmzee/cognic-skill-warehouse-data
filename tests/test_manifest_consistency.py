@@ -62,6 +62,7 @@ def test_skill_and_manifest_ship_as_package_data() -> None:
     assert force == {
         "SKILL.md": f"{_PACKAGE}/SKILL.md",
         "cognic-pack-manifest.toml": f"{_PACKAGE}/cognic-pack-manifest.toml",
+        "golden/manifest.toml": f"{_PACKAGE}/golden/manifest.toml",
         "golden/queries.jsonl": f"{_PACKAGE}/golden/queries.jsonl",
     }
 
