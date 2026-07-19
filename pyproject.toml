@@ -1,0 +1,52 @@
+[project]
+name = "cognic-skill-warehouse-data"
+version = "0.1.0"
+description = "Instruction-only governed skill for warehouse revenue, units, channels, promotions, and time analysis over Oracle SH views."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Cognic", email = "zaighum@msn.com" }]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "ruff>=0.9",
+    "mypy>=1.14",
+    "cognic-agentos @ git+https://github.com/bmzee/cognic-agentos@e5a3f0dbb83b467f555ab87be279635dcbc89713",
+]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cognic_skill_warehouse_data"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"SKILL.md" = "cognic_skill_warehouse_data/SKILL.md"
+"cognic-pack-manifest.toml" = "cognic_skill_warehouse_data/cognic-pack-manifest.toml"
+"golden/queries.jsonl" = "cognic_skill_warehouse_data/golden/queries.jsonl"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_unused_configs = true
+warn_redundant_casts = true
+
+[[tool.mypy.overrides]]
+module = "cognic_agentos.*"
+ignore_missing_imports = true

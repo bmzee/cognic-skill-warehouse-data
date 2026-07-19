@@ -1,0 +1,33 @@
+# Cognic AgentOS instruction-skill manifest.
+
+[pack]
+pack_id = "cognic-skill-warehouse-data"
+schema_version = 1
+kind = "skill"
+
+[identity]
+agent_id = "did:web:github.com:bmzee:cognic-skill-warehouse-data"
+display_name = "Cognic Skill Warehouse Data"
+provider_organization = "Cognic"
+provider_url = "https://github.com/bmzee/cognic-skill-warehouse-data"
+
+[data_governance]
+data_classes = ["internal"]
+purpose = "operational_telemetry"
+retention_policy = "none"
+egress_allow_list = []
+
+[risk_tier]
+tier = "read_only"
+
+[skill]
+mode = "instruction"
+referenced_tools = [
+    "cognic-tool-oracle-schema/run_readonly_query",
+]
+
+[supply_chain]
+attestation_paths = [
+    "attestations/cosign.sig",
+    "attestations/sbom.cdx.json",
+]
