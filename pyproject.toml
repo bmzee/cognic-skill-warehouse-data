@@ -13,6 +13,7 @@ dev = [
     "pytest>=8",
     "ruff>=0.9",
     "mypy>=1.14",
+    "pip-licenses>=5",
     "cognic-agentos @ git+https://github.com/bmzee/cognic-agentos@e5a3f0dbb83b467f555ab87be279635dcbc89713",
 ]
 
