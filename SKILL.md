@@ -83,11 +83,14 @@ but do not join it back to day-grain `SH.V_CALENDAR` or counts will fan out.
 ## 9.1 AMBIGUOUS
 
 - `"revenue"` -> `AMOUNT_SOLD` stated-default.
-- bare `"sales/sell"` -> ASK.
+- bare `"sales/sell"` -> present BOTH labeled cuts: revenue from
+  `AMOUNT_SOLD` and units from `QUANTITY_SOLD`.
 - explicit calendar/fiscal -> answer.
 
 For a revenue question, answer using `AMOUNT_SOLD` and state that default.
-For bare sales/sell wording, ask whether the user means revenue or units.
+For bare sales/sell wording, present both labeled cuts in one answer; do not
+force a round trip. Clarification is reserved for identity ambiguity, where
+answering every candidate would not resolve which person or entity was meant.
 When calendar or fiscal wording is explicit, use that hierarchy and answer
 without asking again.
 
@@ -99,7 +102,7 @@ Calendar-year revenue:
 SELECT SUM(f.amount_sold) AS total_revenue
   FROM sh.v_sales_star f
   JOIN sh.v_calendar c ON c.time_id = f.time_id
- WHERE c.calendar_year = 2000
+ WHERE c.calendar_year = 2020
 ```
 
 Monthly Internet-channel units from the safe aggregate:
@@ -108,7 +111,7 @@ Monthly Internet-channel units from the safe aggregate:
 SELECT calendar_month_desc, SUM(total_quantity_sold) AS units
   FROM sh.v_sales_by_channel
  WHERE channel_desc = 'Internet'
-   AND calendar_year = 2000
+   AND calendar_year = 2020
  GROUP BY calendar_month_desc
  ORDER BY calendar_month_desc
 ```
@@ -130,6 +133,12 @@ SELECT p.promo_category, SUM(f.amount_sold) AS revenue
 - Margin requires `PROMO_COST`, which is not exposed.
 - Named product/customer analysis is unavailable because those dimensions
   are not exposed.
+- For PII, dimensions, or another access boundary, name the required
+  entitlement/approval and offer to request the governed path. Approval alone
+  does not expose data: serving it later also requires a bank-entitled scope.
+- For a structurally impossible cross-scope ask with neither grants nor a
+  governed join key, accurate boundary naming is sufficient; do not invent an
+  approval request path that cannot make the join possible.
 - One scope per query. Do not mix SH objects with another data scope.
 - One plain `SELECT`; DML, DDL, PL/SQL, locking reads, and multiple statements
   refuse.

@@ -6,6 +6,7 @@ n_reps = 3
 model_alias = "cognic-tier1-proof-m85e"
 rubric_ref = "a007-sql-result-v1"
 calibration_set_id = "m85e-a007-human-labelled-v1"
+measured_kappa = 1.0
 
 [ablation]
 enabled = true

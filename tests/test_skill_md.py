@@ -24,7 +24,8 @@ _VIEWS = {
 _AMBIGUOUS_BLOCK = """## 9.1 AMBIGUOUS
 
 - `\"revenue\"` -> `AMOUNT_SOLD` stated-default.
-- bare `\"sales/sell\"` -> ASK.
+- bare `\"sales/sell\"` -> present BOTH labeled cuts: revenue from
+  `AMOUNT_SOLD` and units from `QUANTITY_SOLD`.
 - explicit calendar/fiscal -> answer."""
 _SQL_BLOCK_RE = re.compile(r"```sql\n(.*?)```", re.DOTALL)
 _QUALIFIED_REF_RE = re.compile(r"\b([A-Z][A-Z0-9_$#]{1,}\.[A-Z][A-Z0-9_$#]*)\b")
@@ -64,6 +65,12 @@ def test_ambiguous_block_matches_the_corpus_binding_exactly() -> None:
     assert _AMBIGUOUS_BLOCK in _parsed()[1]
 
 
+def test_measure_ambiguity_never_forces_a_round_trip() -> None:
+    normalized = " ".join(_parsed()[1].split())
+    assert "present both labeled cuts in one answer" in normalized
+    assert "Clarification is reserved for identity ambiguity" in normalized
+
+
 def test_promotion_cost_and_unexposed_dimensions_are_not_claimed() -> None:
     _frontmatter, body = _parsed()
     assert "`V_PROMOTIONS` deliberately excludes `PROMO_COST`" in body
@@ -76,6 +83,13 @@ def test_examples_reference_only_governed_views() -> None:
     refs = {ref for block in blocks for ref in _QUALIFIED_REF_RE.findall(block.upper())}
     assert refs
     assert refs <= _VIEWS
+
+
+def test_refusal_guidance_is_escalation_aware() -> None:
+    normalized = " ".join(_parsed()[1].split())
+    assert "required entitlement/approval" in normalized
+    assert "offer to request the governed path" in normalized
+    assert "bank-entitled scope" in normalized
 
 
 def test_kernel_instruction_validator_has_no_refusals() -> None:
